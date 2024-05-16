@@ -11,9 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 public class User {
-  @Id
   private Integer cod_persona;
   private Integer cod_estado_civil;
   private Integer cod_nacionalidad;
