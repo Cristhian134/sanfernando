@@ -11,4 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LoginResponse {
   private String dni;
+  private String area;
+  private String cliente;
 }

@@ -7,22 +7,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sanfernando.sanfernando.dtos.requests.LoginRequest;
-import com.sanfernando.sanfernando.dtos.responses.LoginResponse;
-import com.sanfernando.sanfernando.services.AuthService;
+import com.sanfernando.sanfernando.dtos.requests.PedidoFormCreateDTO;
+import com.sanfernando.sanfernando.services.PedidoService;
+
 import lombok.RequiredArgsConstructor;
-
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/pedido")
 @RequiredArgsConstructor
-public class AuthController {
-  
-  @Autowired
-  private AuthService authService;
+public class PedidoController {
 
-  @PostMapping(value = "login")
-  public ResponseEntity<Object> login(@RequestBody LoginRequest request) {
-    LoginResponse response = authService.login(request);
+  @Autowired
+  private PedidoService pedidoService;
+
+  @PostMapping(value = "form")
+  public ResponseEntity<Object> createForm(@RequestBody PedidoFormCreateDTO request) {
+    PedidoFormCreateDTO response = pedidoService.createForm(request);
     return ResponseEntity.ok(response);
   }
 }

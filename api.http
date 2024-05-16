@@ -2,10 +2,24 @@
 GET http://localhost:8080/api/user/all HTTP/1.1
 
 ###
+POST http://localhost:8080/api/pedido/form HTTP/1.1
+Content-Type: application/json
+
+{
+  "nombre": "Juan",
+  "apellidoPaterno": "Perez",
+  "apellidoMaterno": "Perez",
+  "dni": "12345678",
+  "emailEmpresarial": "juan@juan.com",
+  "emailPersonal": "juan@juan.com",
+  "fechaSolicitud": "2020-01-01",
+  "fechaEntrega": "2020-01-01"
+}
+
+###
 POST http://localhost:8080/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "dni": "77688137",
-  "password": "hjk"
+  "dni": "77688137"
 }

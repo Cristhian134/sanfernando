@@ -11,5 +11,4 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LoginRequest {
   private String dni;
-  private String password;
 }
