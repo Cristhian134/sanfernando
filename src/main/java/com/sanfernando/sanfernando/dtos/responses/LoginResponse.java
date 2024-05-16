@@ -13,4 +13,5 @@ public class LoginResponse {
   private String dni;
   private String area;
   private String cliente;
+  private Boolean representante;
 }
