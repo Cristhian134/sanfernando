@@ -2,19 +2,17 @@
 GET http://localhost:8080/api/user/all HTTP/1.1
 
 ###
-POST http://localhost:8080/api/pedido/form HTTP/1.1
+POST http://localhost:8080/api/user/persona HTTP/1.1
 Content-Type: application/json
 
 {
-  "nombre": "Juan",
-  "apellidoPaterno": "Perez",
-  "apellidoMaterno": "Perez",
   "dni": "12345678",
-  "emailEmpresarial": "juan@juan.com",
-  "emailPersonal": "juan@juan.com",
-  "fechaSolicitud": "2020-01-01",
-  "fechaEntrega": "2020-01-01"
+  "primerApellido": "Perez",
+  "segundoApellido": "Perez",
+  "prenombre": "Juan"
 }
+
+
 
 ###
 POST http://localhost:8080/api/auth/login HTTP/1.1
@@ -23,3 +21,69 @@ Content-Type: application/json
 {
   "dni": "77688137"
 }
+
+###
+GET http://localhost:8080/api/pedido/all HTTP/1.1
+
+###
+POST http://localhost:8080/api/pedido/datos HTTP/1.1
+Content-Type: application/json
+
+{
+  "personaRequest": {
+    "idEstadoCivil": 1,
+    "idNacionalidad": 1,
+    "idGenero": 1,
+    "dni": "12345678",
+    "primerApellido": "Perez",
+    "segundoApellido": "Perez",
+    "prenombre": "Juan"
+  },
+  "clienteRequest": {
+    "idCliente": 1,
+    "nombre": "Juan Perez",
+    "ruc": "12345678",
+    "direccion": "Direccion de prueba"
+  },
+  "representanteRequest": {
+    "telefono": "12345678",
+    "correoEmpresarial": "correo@correo.com",
+    "cargo": "Cargo de prueba"
+  }
+}
+
+###
+POST http://localhost:8080/api/pedido/ticket HTTP/1.1
+Content-Type: application/json
+
+{
+  "fechaEntrega": "2024-01-01"
+}
+
+###
+POST http://localhost:8080/api/pedido/new HTTP/1.1
+Content-Type: application/json
+
+{
+  "idRepresentante": 1,
+  "idEmpleadoRegistro": 1,
+  "idTipoPedido": "V",
+  "idEstadoPedido": "A",
+  "idTicket": 1,
+  "fechaRegistro": "2024-01-01",
+  "fechaEntrega": "2024-01-20",
+  "pedidoTicketProductoRequest": [
+    {
+      "idElementoCatalogo": 1,
+      "cantidad": 1
+    },
+    {
+      "idElementoCatalogo": 2,
+      "cantidad": 2
+    }
+  ]
+}
+
+###
+GET http://localhost:8080/api/pedido/productos HTTP/1.1
+

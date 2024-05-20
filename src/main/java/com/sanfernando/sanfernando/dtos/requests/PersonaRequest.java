@@ -1,4 +1,4 @@
-package com.sanfernando.sanfernando.models;
+package com.sanfernando.sanfernando.dtos.requests;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Persona {
-  private Integer idPersona;
+public class PersonaRequest {
   private Integer idEstadoCivil;
   private Integer idNacionalidad;
   private Integer idGenero;

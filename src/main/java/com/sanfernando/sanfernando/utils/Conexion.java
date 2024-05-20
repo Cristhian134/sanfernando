@@ -15,7 +15,7 @@ public class Conexion {
 
   private Connection con;
 
-  String url = "jdbc:postgresql://localhost:5432/san-fernando-db";
+  String url = "jdbc:postgresql://localhost:5432/testing";
   String username = "postgres";
   String password = "123456";
   
