@@ -19,7 +19,7 @@ POST http://localhost:8080/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "dni": "77688137"
+  "dni": "10300661"
 }
 
 ###
@@ -69,7 +69,6 @@ Content-Type: application/json
   "idEmpleadoRegistro": 1,
   "idTipoPedido": "V",
   "idEstadoPedido": "A",
-  "idTicket": 1,
   "fechaRegistro": "2024-01-01",
   "fechaEntrega": "2024-01-20",
   "pedidoTicketProductoRequest": [

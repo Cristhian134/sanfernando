@@ -60,15 +60,15 @@ public class UserDaoImpl implements UserDao{
     List<LoginResponse> loginResponses = new ArrayList<>();
     try {
       String query = 
-        "SELECT u.dni, c.nombre area, ct.tipo_cliente, representante " +
+        "SELECT u.id_empleado, u.dni, c.nombre area, ct.tipo_cliente, representante " +
         "FROM ( " +
-          "SELECT p.dni,e.cod_cliente, true AS representante FROM empleado AS e INNER JOIN persona AS p ON p.cod_persona = e.cod_persona " +
+          "SELECT e.cod_empleado id_empleado, p.dni,e.cod_cliente, true AS representante FROM empleado AS e INNER JOIN persona AS p ON p.cod_persona = e.cod_persona " +
           "UNION " +
-          "SELECT p.dni,r.cod_cliente, false AS representante FROM representante AS r INNER JOIN persona AS p ON p.cod_persona = r.cod_persona " +
+          "SELECT r.cod_representante id_empleado, p.dni,r.cod_cliente, false AS representante FROM representante AS r INNER JOIN persona AS p ON p.cod_persona = r.cod_persona " +
         ") AS u " +
         "INNER JOIN cliente AS c ON c.cod_cliente = u.cod_cliente " +
         "INNER JOIN cliente_tipo AS ct ON ct.cod_cliente_tipo = c.cod_cliente_tipo " +
-        "WHERE u.dni = ?; ";
+        "WHERE u.dni = ? AND ct.cod_cliente_tipo = 'I'; ";
       PreparedStatement ps = con.getCon().prepareStatement(query);
       ps.setString(1,loginRequest.getDni());
       ResultSet rs = ps.executeQuery();
@@ -80,6 +80,7 @@ public class UserDaoImpl implements UserDao{
           .area(rs.getString("area"))
           .cliente(rs.getString("tipo_cliente"))
           .representante(rs.getBoolean("representante"))
+          .idEmpleado(rs.getInt("id_empleado"))
           .build();
         loginResponses.add(loginResponse);
       }

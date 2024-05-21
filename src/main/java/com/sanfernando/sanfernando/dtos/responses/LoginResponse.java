@@ -14,4 +14,5 @@ public class LoginResponse {
   private String area;
   private String cliente;
   private Boolean representante;
+  private Integer idEmpleado;
 }
