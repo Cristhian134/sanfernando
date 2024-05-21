@@ -18,7 +18,7 @@ POST http://localhost:8080/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "dni": "77688137"
+  "dni": "78943713"
 }
 
 ### MODULO DE PEDIDOS ###
