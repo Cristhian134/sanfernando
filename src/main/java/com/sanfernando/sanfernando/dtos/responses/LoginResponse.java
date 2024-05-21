@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class LoginResponse {
   private String dni;
   private String area;
-  private String cliente;
+  private String cargo;
   private Boolean representante;
   private Integer idEmpleado;
 }

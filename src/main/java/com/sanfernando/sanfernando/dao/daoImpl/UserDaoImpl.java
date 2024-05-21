@@ -60,15 +60,20 @@ public class UserDaoImpl implements UserDao{
     List<LoginResponse> loginResponses = new ArrayList<>();
     try {
       String query = 
-        "SELECT u.id_empleado, u.dni, c.nombre area, ct.tipo_cliente, representante " +
+        "SELECT u.id_empleado, u.dni, u.cargo, c.nombre AS area, u.representante " +
         "FROM ( " +
-          "SELECT e.cod_empleado id_empleado, p.dni,e.cod_cliente, true AS representante FROM empleado AS e INNER JOIN persona AS p ON p.cod_persona = e.cod_persona " +
+          "SELECT e.cod_empleado id_empleado, ec.descripcion cargo,p.dni, e.cod_cliente, false AS representante " +
+          "FROM empleado AS e " +
+          "INNER JOIN empleado_cargo AS ec ON ec.cod_empleado_cargo = e.cod_empleado_cargo " +
+          "INNER JOIN persona AS p ON p.cod_persona = e.cod_persona " +
           "UNION " +
-          "SELECT r.cod_representante id_empleado, p.dni,r.cod_cliente, false AS representante FROM representante AS r INNER JOIN persona AS p ON p.cod_persona = r.cod_persona " +
+          "SELECT r.cod_representante id_empleado, r.cargo cargo,p.dni, r.cod_cliente, true AS representante " +
+          "FROM representante AS r " +
+          "INNER JOIN persona AS p ON p.cod_persona = r.cod_persona " +
         ") AS u " +
         "INNER JOIN cliente AS c ON c.cod_cliente = u.cod_cliente " +
         "INNER JOIN cliente_tipo AS ct ON ct.cod_cliente_tipo = c.cod_cliente_tipo " +
-        "WHERE u.dni = ? AND ct.cod_cliente_tipo = 'I'; ";
+        "WHERE ct.cod_cliente_tipo = 'I' AND u.dni = ?; ";
       PreparedStatement ps = con.getCon().prepareStatement(query);
       ps.setString(1,loginRequest.getDni());
       ResultSet rs = ps.executeQuery();
@@ -78,7 +83,7 @@ public class UserDaoImpl implements UserDao{
           .builder()
           .dni(rs.getString("dni"))
           .area(rs.getString("area"))
-          .cliente(rs.getString("tipo_cliente"))
+          .cargo(rs.getString("cargo"))
           .representante(rs.getBoolean("representante"))
           .idEmpleado(rs.getInt("id_empleado"))
           .build();
