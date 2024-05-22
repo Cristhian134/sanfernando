@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sanfernando.sanfernando.dtos.requests.PedidoFormCreateDTO;
 import com.sanfernando.sanfernando.dtos.requests.PedidoFormRequest;
 import com.sanfernando.sanfernando.dtos.requests.PedidoRequest;
 import com.sanfernando.sanfernando.dtos.requests.PedidoTicketRequest;

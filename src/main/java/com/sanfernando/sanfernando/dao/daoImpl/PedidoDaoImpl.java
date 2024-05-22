@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.sanfernando.sanfernando.dao.PedidoDao;
-import com.sanfernando.sanfernando.dtos.requests.PedidoFormCreateDTO;
 import com.sanfernando.sanfernando.dtos.requests.PedidoFormRequest;
 import com.sanfernando.sanfernando.dtos.requests.PedidoRequest;
 import com.sanfernando.sanfernando.dtos.requests.PedidoTicketProductoRequest;
@@ -24,8 +23,6 @@ import com.sanfernando.sanfernando.dtos.responses.PedidoResponse;
 import com.sanfernando.sanfernando.dtos.responses.PedidoTicketResponse;
 import com.sanfernando.sanfernando.dtos.responses.PersonaResponse;
 import com.sanfernando.sanfernando.dtos.responses.RepresentanteResponse;
-import com.sanfernando.sanfernando.models.Representante;
-import com.sanfernando.sanfernando.models.User;
 import com.sanfernando.sanfernando.services.UserService;
 import com.sanfernando.sanfernando.utils.Conexion;
 
