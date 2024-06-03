@@ -1,4 +1,13 @@
 ###
+POST  https://www.academico.uni.edu.pe/alumno/entra HTTP/1.1
+Content-Type: application/json
+
+{
+  "codigo": "20220075d",
+  "contrasenia": "602047",
+}
+
+###
 GET http://localhost:8080/api/user/all HTTP/1.1
 
 ###
@@ -89,7 +98,28 @@ Content-Type: application/json
 
 ### MODULO DE REPORTES ###
 
-GET http://localhost:8080/api/reportes/operacion HTTP/1.1
+
+###
+GET http://localhost:8080/api/reportes/reclamo/urgencia HTTP/1.1
+
+###
+GET http://localhost:8080/api/reportes/reclamo/tiempo HTTP/1.1
+
+###
+GET http://localhost:8080/api/reportes/reclamo/mes HTTP/1.1
+
+###
+GET http://localhost:8080/api/reportes/pedido/mes HTTP/1.1
+
+###
+GET http://localhost:8080/api/reportes/pedido/top HTTP/1.1
+
+###
+GET http://localhost:8080/api/reportes/lookup/tipo HTTP/1.1
+
+###
+GET http://localhost:8080/api/reportes/lookup/all HTTP/1.1
+
 
 ###
 POST http://localhost:8080/api/reportes/programacion HTTP/1.1
@@ -99,7 +129,14 @@ Content-Type: application/json
   "idRepresentante": 1,
   "idReporteFormato": 1,
   "idReporteEstado": 1,
+  "idReporteTipo": 1,
   "idReporteFrecuencia": 1,
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-01-20"
 } 
+
+###
+GET http://localhost:8080/api/reportes/operacion HTTP/1.1
+
+###
+GET http://localhost:8080/api/reportes/almacen/stock HTTP/1.1

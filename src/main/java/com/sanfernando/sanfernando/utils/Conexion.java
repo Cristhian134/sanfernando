@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import org.springframework.stereotype.Service;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Service
 public class Conexion {
 
   private Connection con;
@@ -31,7 +34,6 @@ public class Conexion {
   public void closeConexion() {
     try{
       this.con.close();
-      this.con = null;
     }catch (SQLException e){
       e.printStackTrace();
     }

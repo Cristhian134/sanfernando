@@ -13,6 +13,7 @@ public class ReporteProgramacionRequest {
   private Integer idRepresentante;
   private Integer idReporteFormato;
   private Integer idReporteEstado;
+  private Integer idReporteTipo;
   private Integer idReporteFrecuencia;
   private String fechaInicio;
   private String fechaFin;

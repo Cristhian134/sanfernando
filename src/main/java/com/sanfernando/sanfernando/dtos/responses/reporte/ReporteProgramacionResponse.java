@@ -1,4 +1,4 @@
-package com.sanfernando.sanfernando.dtos.responses;
+package com.sanfernando.sanfernando.dtos.responses.reporte;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
