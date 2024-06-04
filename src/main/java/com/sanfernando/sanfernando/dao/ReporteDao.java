@@ -6,6 +6,7 @@ import com.sanfernando.sanfernando.dtos.requests.ReporteProgramacionRequest;
 import com.sanfernando.sanfernando.dtos.responses.ReporteFrecuenciaResponse;
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReporteAlmacenStockResponse;
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReporteFormatoResponse;
+import com.sanfernando.sanfernando.dtos.responses.reporte.ReporteMostrarProgramacionResponse;
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReporteOperacionResponse;
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReportePedidoMesResponse;
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReportePedidoTopResponse;
@@ -27,4 +28,6 @@ public interface ReporteDao {
   public List<ReporteFrecuenciaResponse> getReporteFrecuencia();
   public List<ReporteFormatoResponse> getReporteFormato();
   public List<ReporteAlmacenStockResponse> getReporteAlmacenStock();
+  public void stopProgramacionReporte(int idProgramacionReporte);
+  public List<ReporteMostrarProgramacionResponse> getReporteProgramacionAll();
 } 

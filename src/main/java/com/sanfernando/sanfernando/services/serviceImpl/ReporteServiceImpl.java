@@ -10,6 +10,7 @@ import com.sanfernando.sanfernando.dtos.requests.ReporteProgramacionRequest;
 import com.sanfernando.sanfernando.dtos.responses.ReporteFrecuenciaResponse;
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReporteAlmacenStockResponse;
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReporteLookUpTablesResponse;
+import com.sanfernando.sanfernando.dtos.responses.reporte.ReporteMostrarProgramacionResponse;
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReporteOperacionResponse;
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReportePedidoMesResponse;
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReportePedidoTopResponse;
@@ -85,5 +86,15 @@ public class ReporteServiceImpl implements ReporteService{
   @Override
   public List<ReporteAlmacenStockResponse> getReporteAlmacenStock() {
     return reporteDao.getReporteAlmacenStock();
+  }
+
+  @Override
+  public void stopProgramacionReporte(int idProgramacionReporte) {
+    reporteDao.stopProgramacionReporte(idProgramacionReporte);
+  }
+
+  @Override
+  public List<ReporteMostrarProgramacionResponse> getReporteProgramacionAll() {
+    return reporteDao.getReporteProgramacionAll();
   }
 }

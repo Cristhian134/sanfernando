@@ -15,6 +15,7 @@ import com.sanfernando.sanfernando.dtos.requests.ReporteProgramacionRequest;
 import com.sanfernando.sanfernando.dtos.responses.ReporteFrecuenciaResponse;
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReporteAlmacenStockResponse;
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReporteLookUpTablesResponse;
+import com.sanfernando.sanfernando.dtos.responses.reporte.ReporteMostrarProgramacionResponse;
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReporteOperacionResponse;
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReportePedidoMesResponse;
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReportePedidoTopResponse;
@@ -57,6 +58,12 @@ public class ReporteController {
   @PostMapping(value = "programacion")
   public ResponseEntity<Object> newForm(@RequestBody ReporteProgramacionRequest request) {
     ReporteProgramacionResponse response = reporteService.newProgramacion(request);
+    return ResponseEntity.ok(response);
+  }
+
+  @GetMapping(value = "programacion/all")
+  public ResponseEntity<Object> getReporteProgramacionAll() {
+    List<ReporteMostrarProgramacionResponse> response = reporteService.getReporteProgramacionAll();
     return ResponseEntity.ok(response);
   }
 

@@ -132,8 +132,11 @@ Content-Type: application/json
   "idReporteTipo": 1,
   "idReporteFrecuencia": 1,
   "fechaInicio": "2024-01-01",
-  "fechaFin": "2024-01-20"
+  "fechaFin": "2024-06-03"
 } 
+
+###
+GET http://localhost:8080/api/reportes/programacion/all HTTP/1.1
 
 ###
 GET http://localhost:8080/api/reportes/operacion HTTP/1.1

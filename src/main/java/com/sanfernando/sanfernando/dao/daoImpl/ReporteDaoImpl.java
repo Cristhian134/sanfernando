@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.quartz.SchedulerException;
 import org.springframework.stereotype.Repository;
 
 import com.sanfernando.sanfernando.dao.ReporteDao;
@@ -14,6 +15,7 @@ import com.sanfernando.sanfernando.dtos.requests.ReporteProgramacionRequest;
 import com.sanfernando.sanfernando.dtos.responses.ReporteFrecuenciaResponse;
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReporteAlmacenStockResponse;
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReporteFormatoResponse;
+import com.sanfernando.sanfernando.dtos.responses.reporte.ReporteMostrarProgramacionResponse;
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReporteOperacionResponse;
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReportePedidoMesResponse;
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReportePedidoTopResponse;
@@ -24,9 +26,11 @@ import com.sanfernando.sanfernando.dtos.responses.reporte.ReporteReclamoUrgencia
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReporteTipoResponse;
 import com.sanfernando.sanfernando.utils.Conexion;
 import com.sanfernando.sanfernando.utils.TimeUtils;
+import com.sanfernando.sanfernando.utils.quartz.ReporteJob;
+import com.sanfernando.sanfernando.utils.quartz.ReporteScheduler;
 
 @Repository
-public class ReporteDaoImpl implements ReporteDao{
+public class ReporteDaoImpl implements ReporteDao {
 
   private final Conexion con = new Conexion();
   private final TimeUtils timeUtils = new TimeUtils();
@@ -37,7 +41,8 @@ public class ReporteDaoImpl implements ReporteDao{
     List<ReporteOperacionResponse> reporteOperacionResponses = new ArrayList<>();
     try {
       String query = 
-        "SELECT ot.cod_tipo_operacion, ot.descripcion, SUM(hora_fin-hora_inicio), COUNT(*)::integer, SUM(hora_fin-hora_inicio)/COUNT(*) as tiempo_medio, " +  
+        "SELECT ot.cod_tipo_operacion, ot.descripcion," +
+        "SUM(COALESCE(hora_fin-hora_inicio,'00:00:00')), COUNT(o.id_operacion)::integer, COALESCE(SUM(hora_fin-hora_inicio)/COUNT(o.id_operacion),'00:00:00') as tiempo_medio, " +  
         "STRING_AGG ( " + 
           "o.id_operacion::character varying, " + 
           "'*' " + 
@@ -105,7 +110,42 @@ public class ReporteDaoImpl implements ReporteDao{
       e.printStackTrace();
     }
     con.closeConexion();
+
+    try {
+      this.executeSchedulerReport(reporteProgramacionResponse, reporteProgramacionRequest.getFechaFin());
+    } catch (SchedulerException e) {
+      e.printStackTrace();
+    }
+
     return reporteProgramacionResponse;
+  }
+
+  public void executeSchedulerReport(ReporteProgramacionResponse reporteProgramacionResponse, String fechaFin) throws SchedulerException{
+    if (reporteProgramacionResponse.getIdProgramacionReporte() != null) {
+      ReporteScheduler scheduler = ReporteScheduler
+				.builder()
+				.nombreTrigger("ReporteTrigger" + reporteProgramacionResponse.getIdProgramacionReporte())
+				.nombreJob("ReporteJob" + reporteProgramacionResponse.getIdProgramacionReporte())
+				.nombreGroup("ReporteGroup" + reporteProgramacionResponse.getIdProgramacionReporte())
+				.build();
+			scheduler.startScheduler(ReporteJob.class, fechaFin,timeUtils.localTimePlus(20), reporteProgramacionResponse.getIdProgramacionReporte());
+    }
+  }
+
+  @Override
+  public void stopProgramacionReporte(int idProgramacionReporte)  {
+    con.startConexion();
+    try {
+      String query = "UPDATE programacion_reporte SET cod_reporte_estado = ? WHERE cod_programacion_reporte = ?";
+      PreparedStatement ps = con.getCon().prepareStatement(query);
+      ps.setInt(1, 2);
+      ps.setInt(2, idProgramacionReporte);
+      ps.executeUpdate();
+      ps.close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    con.closeConexion();
   }
 
   @Override
@@ -424,5 +464,47 @@ public class ReporteDaoImpl implements ReporteDao{
     }
     con.closeConexion();
     return reporteAlmacenStockResponses;
+  }
+
+  @Override
+  public List<ReporteMostrarProgramacionResponse> getReporteProgramacionAll() {
+    con.startConexion();
+    List<ReporteMostrarProgramacionResponse> reporteMostrarProgramacionResponses = new ArrayList<>();
+    try {
+      String query =           
+        "SELECT "
+        + "pr.cod_programacion_reporte, "
+        + "rfo.descripcion AS formato, "
+        + "rt.descripcion AS tipo, "
+        + "rfe.descripcion AS frecuencia, "
+        + "pr.fecha_inicio, "
+        + "pr.fecha_fin "
+        + "FROM programacion_reporte AS pr "
+        + "INNER JOIN reporte_formato AS rfo ON rfo.cod_reporte_formato = pr.cod_reporte_formato "
+        + "INNER JOIN reporte_tipo AS rt ON rt.cod_reporte_tipo = pr.cod_reporte_tipo "
+        + "INNER JOIN reporte_frecuencia AS rfe ON rfe.cod_reporte_frecuencia = pr.cod_reporte_frecuencia "
+        + "WHERE pr.cod_reporte_estado = 1 "
+        + "ORDER BY pr.cod_programacion_reporte";
+      PreparedStatement ps = con.getCon().prepareStatement(query);
+      ResultSet rs = ps.executeQuery();
+      while (rs.next()) {
+        ReporteMostrarProgramacionResponse reporteMostrarProgramacionResponse = ReporteMostrarProgramacionResponse
+          .builder()
+          .idProgramacionReporte(rs.getInt("cod_programacion_reporte"))
+          .descripcionFormato(rs.getString("formato"))
+          .descripcionTipo(rs.getString("tipo"))
+          .descripcionFrecuencia(rs.getString("frecuencia"))
+          .fechaInicio(rs.getString("fecha_inicio"))
+          .fechaFin(rs.getString("fecha_fin"))
+          .build();
+        reporteMostrarProgramacionResponses.add(reporteMostrarProgramacionResponse);
+      }
+      rs.close();
+      ps.close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    con.closeConexion();
+    return reporteMostrarProgramacionResponses;
   }
 }

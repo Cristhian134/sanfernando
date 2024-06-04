@@ -2,6 +2,8 @@ package com.sanfernando.sanfernando.utils;
 
 import java.sql.Time;
 import java.text.DecimalFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,5 +26,13 @@ public class TimeUtils {
       e.printStackTrace();
       return 0;
     }
+  }
+
+  public String localTimePlus(int seconds) {
+    LocalTime time = LocalTime.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+    time = time.plusSeconds(seconds);
+    String timeFormatted = time.format(formatter);
+    return timeFormatted;
   }
 }
