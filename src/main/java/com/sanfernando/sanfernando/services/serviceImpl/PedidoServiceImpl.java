@@ -14,6 +14,8 @@ import com.sanfernando.sanfernando.dtos.responses.PedidoListaReponse;
 import com.sanfernando.sanfernando.dtos.responses.PedidoProductoResponse;
 import com.sanfernando.sanfernando.dtos.responses.PedidoResponse;
 import com.sanfernando.sanfernando.dtos.responses.PedidoTicketResponse;
+import com.sanfernando.sanfernando.dtos.responses.pedidos.OrdenResponse;
+import com.sanfernando.sanfernando.dtos.responses.pedidos.OrderItem;
 import com.sanfernando.sanfernando.services.PedidoService;
 
 @Service
@@ -45,5 +47,15 @@ public class PedidoServiceImpl implements PedidoService{
   @Override
   public PedidoResponse newPedido(PedidoRequest pedidoRequest) {
     return pedidoDao.newPedido(pedidoRequest);
+  }
+
+  @Override
+  public OrdenResponse getOrderDetails(int orderId) {
+    return pedidoDao.getOrderDetails(orderId);
+  }
+
+  @Override
+  public List<OrderItem> getOrderItems(int orderId) {
+    return pedidoDao.getOrderItems(orderId);
   }
 }

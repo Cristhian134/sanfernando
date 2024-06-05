@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,8 @@ import com.sanfernando.sanfernando.dtos.responses.PedidoListaReponse;
 import com.sanfernando.sanfernando.dtos.responses.PedidoProductoResponse;
 import com.sanfernando.sanfernando.dtos.responses.PedidoResponse;
 import com.sanfernando.sanfernando.dtos.responses.PedidoTicketResponse;
+import com.sanfernando.sanfernando.dtos.responses.pedidos.OrdenResponse;
+import com.sanfernando.sanfernando.dtos.responses.pedidos.OrderItem;
 import com.sanfernando.sanfernando.services.PedidoService;
 
 import lombok.RequiredArgsConstructor;
@@ -59,6 +62,18 @@ public class PedidoController {
   @PostMapping(value = "new")
   public ResponseEntity<Object> newPedido(@RequestBody PedidoRequest request) {
     PedidoResponse response = pedidoService.newPedido(request);
+    return ResponseEntity.ok(response);
+  }
+
+  @GetMapping(value = "details/{id}")
+  public ResponseEntity<Object> getDetails(@PathVariable("id") int idPedido) {
+    OrdenResponse response = pedidoService.getOrderDetails(idPedido);
+    return ResponseEntity.ok(response);
+  }
+
+  @GetMapping(value = "items/{id}")
+  public ResponseEntity<Object> getItems(@PathVariable("id") int idPedido) {
+    List<OrderItem> response = pedidoService.getOrderItems(idPedido);
     return ResponseEntity.ok(response);
   }
 }

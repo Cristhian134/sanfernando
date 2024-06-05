@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.sanfernando.sanfernando.dao.ReporteDao;
 import com.sanfernando.sanfernando.dtos.requests.ReporteProgramacionRequest;
+import com.sanfernando.sanfernando.dtos.requests.reportes.ReporteRequest;
 import com.sanfernando.sanfernando.dtos.responses.ReporteFrecuenciaResponse;
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReporteAlmacenStockResponse;
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReporteFormatoResponse;
@@ -506,5 +507,37 @@ public class ReporteDaoImpl implements ReporteDao {
     }
     con.closeConexion();
     return reporteMostrarProgramacionResponses;
+  }
+
+  @Override
+  public ReporteRequest newReporte(ReporteRequest reporteRequest) {
+    con.startConexion();
+    ReporteRequest reporteRequestResponse = new ReporteRequest();
+    try {
+      String query = 
+        "INSERT INTO reporte " +
+        "(cod_representante, cod_reporte_formato, cod_reporte_tipo, fecha_generacion, hora_generacion) " +
+        "VALUES (?, ?, ?, ?, ?); ";
+      PreparedStatement ps = con.getCon().prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+      ps.setInt(1, reporteRequest.getIdRepresentante());
+      ps.setInt(2, reporteRequest.getIdReporteFormato());
+      ps.setInt(3, reporteRequest.getIdReporteTipo());
+
+      java.sql.Date sqlFechaGeneracion = java.sql.Date.valueOf(timeUtils.getCurrentDate());
+      ps.setDate(4, sqlFechaGeneracion);
+      java.sql.Time sqlHoraGeneracion = java.sql.Time.valueOf(timeUtils.getCurrentTime());
+      ps.setTime(5, sqlHoraGeneracion);
+      
+      ps.executeUpdate();
+      ResultSet rs = ps.getGeneratedKeys();
+      while (rs.next()) {
+      }
+      rs.close();
+      ps.close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    con.closeConexion();
+    return reporteRequest;
   }
 }

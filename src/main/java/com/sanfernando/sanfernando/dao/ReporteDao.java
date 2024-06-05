@@ -3,6 +3,7 @@ package com.sanfernando.sanfernando.dao;
 import java.util.List;
 
 import com.sanfernando.sanfernando.dtos.requests.ReporteProgramacionRequest;
+import com.sanfernando.sanfernando.dtos.requests.reportes.ReporteRequest;
 import com.sanfernando.sanfernando.dtos.responses.ReporteFrecuenciaResponse;
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReporteAlmacenStockResponse;
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReporteFormatoResponse;
@@ -30,4 +31,5 @@ public interface ReporteDao {
   public List<ReporteAlmacenStockResponse> getReporteAlmacenStock();
   public void stopProgramacionReporte(int idProgramacionReporte);
   public List<ReporteMostrarProgramacionResponse> getReporteProgramacionAll();
+  public ReporteRequest newReporte(ReporteRequest reporteRequest);
 } 

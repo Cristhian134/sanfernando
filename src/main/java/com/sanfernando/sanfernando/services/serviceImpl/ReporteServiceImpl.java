@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.sanfernando.sanfernando.dao.ReporteDao;
 import com.sanfernando.sanfernando.dtos.requests.ReporteProgramacionRequest;
+import com.sanfernando.sanfernando.dtos.requests.reportes.ReporteRequest;
 import com.sanfernando.sanfernando.dtos.responses.ReporteFrecuenciaResponse;
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReporteAlmacenStockResponse;
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReporteLookUpTablesResponse;
@@ -96,5 +97,10 @@ public class ReporteServiceImpl implements ReporteService{
   @Override
   public List<ReporteMostrarProgramacionResponse> getReporteProgramacionAll() {
     return reporteDao.getReporteProgramacionAll();
+  }
+
+  @Override
+  public ReporteRequest newReporte(ReporteRequest reporteRequest) {
+    return reporteDao.newReporte(reporteRequest);
   }
 }

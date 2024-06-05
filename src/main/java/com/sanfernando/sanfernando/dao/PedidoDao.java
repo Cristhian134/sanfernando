@@ -10,6 +10,8 @@ import com.sanfernando.sanfernando.dtos.responses.PedidoListaReponse;
 import com.sanfernando.sanfernando.dtos.responses.PedidoProductoResponse;
 import com.sanfernando.sanfernando.dtos.responses.PedidoResponse;
 import com.sanfernando.sanfernando.dtos.responses.PedidoTicketResponse;
+import com.sanfernando.sanfernando.dtos.responses.pedidos.OrdenResponse;
+import com.sanfernando.sanfernando.dtos.responses.pedidos.OrderItem;
 
 public interface PedidoDao {
   public PedidoFormResponse newForm(PedidoFormRequest pedidoFormRequest);
@@ -17,4 +19,6 @@ public interface PedidoDao {
   public List<PedidoListaReponse> getAll();
   public PedidoTicketResponse newTicket(PedidoTicketRequest pedidoTicketRequest);
   public PedidoResponse newPedido(PedidoRequest pedidoRequest);
+  public OrdenResponse getOrderDetails(int orderId);
+  public List<OrderItem> getOrderItems(int orderId);
 }

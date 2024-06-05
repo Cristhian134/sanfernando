@@ -36,6 +36,13 @@ Content-Type: application/json
 GET http://localhost:8080/api/pedido/all HTTP/1.1
 
 ###
+GET http://localhost:8080/api/pedido/details/1 HTTP/1.1
+
+###
+GET http://localhost:8080/api/pedido/items/1 HTTP/1.1
+
+
+###
 POST http://localhost:8080/api/pedido/datos HTTP/1.1
 Content-Type: application/json
 
@@ -137,6 +144,18 @@ Content-Type: application/json
 
 ###
 GET http://localhost:8080/api/reportes/programacion/all HTTP/1.1
+
+###
+POST http://localhost:8080/api/reportes/new HTTP/1.1
+Content-Type: application/json
+
+{
+  "idRepresentante": 1,
+  "idReporteFormato": 1,
+  "idReporteTipo": 1,
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-06-03"
+} 
 
 ###
 GET http://localhost:8080/api/reportes/operacion HTTP/1.1

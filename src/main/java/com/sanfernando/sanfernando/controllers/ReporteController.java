@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sanfernando.sanfernando.dtos.requests.ReporteProgramacionRequest;
+import com.sanfernando.sanfernando.dtos.requests.reportes.ReporteRequest;
 import com.sanfernando.sanfernando.dtos.responses.ReporteFrecuenciaResponse;
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReporteAlmacenStockResponse;
 import com.sanfernando.sanfernando.dtos.responses.reporte.ReporteLookUpTablesResponse;
@@ -58,6 +59,12 @@ public class ReporteController {
   @PostMapping(value = "programacion")
   public ResponseEntity<Object> newForm(@RequestBody ReporteProgramacionRequest request) {
     ReporteProgramacionResponse response = reporteService.newProgramacion(request);
+    return ResponseEntity.ok(response);
+  }
+
+  @PostMapping(value = "new")
+  public ResponseEntity<Object> newReporte(@RequestBody ReporteRequest request) {
+    ReporteRequest response = reporteService.newReporte(request);
     return ResponseEntity.ok(response);
   }
 

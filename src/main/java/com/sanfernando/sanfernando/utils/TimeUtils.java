@@ -2,6 +2,7 @@ package com.sanfernando.sanfernando.utils;
 
 import java.sql.Time;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
@@ -34,5 +35,17 @@ public class TimeUtils {
     time = time.plusSeconds(seconds);
     String timeFormatted = time.format(formatter);
     return timeFormatted;
+  }
+
+  public String getCurrentDate() {
+    LocalDate currentDate = LocalDate.now();
+    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    return currentDate.format(dateFormatter);
+  }
+
+  public String getCurrentTime() {
+    LocalTime currentTime = LocalTime.now();
+    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+    return currentTime.format(timeFormatter);
   }
 }
