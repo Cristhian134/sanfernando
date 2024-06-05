@@ -435,7 +435,7 @@ public class ReporteDaoImpl implements ReporteDao {
         "ecu.descripcion AS unidad, " +
         "ect.descripcion AS tipo, " +
         "ep.descripcion AS produccion, " +
-        "SUM(st.cantidad) AS cantidad " +
+        "SUM(st.cantidad_disponible) AS cantidad " +
         "FROM elemento_catalogo AS ec " +
         "LEFT JOIN stock AS st ON st.id_elemento_catalogo = ec.id_elemento_catalogo " +
         "LEFT JOIN elemento_catalogo_unidad AS ecu ON ecu.cod_unidad = ec.cod_unidad " +

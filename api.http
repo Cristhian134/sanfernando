@@ -143,3 +143,15 @@ GET http://localhost:8080/api/reportes/operacion HTTP/1.1
 
 ###
 GET http://localhost:8080/api/reportes/almacen/stock HTTP/1.1
+
+###
+GET http://localhost:8080/api/almacen/validarEmpleado?dni=7894371 HTTP/1.1
+
+
+### Error
+###
+GET http://localhost:8080/api/almacen/buscarPorCodGuiaRemision?codGuiaRemision=00002202404010800011 HTTP/1.1
+
+###
+GET http://localhost:8080/api/almacen/buscarPorNroPrecinto?nroPrecinto=asdasdada HTTP/1.1
+

@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Persona {
-  private Integer idPersona;
-  private Integer idEstadoCivil;
-  private Integer idNacionalidad;
-  private Integer idGenero;
+  private Integer cod_persona;
+  private Integer cod_estado_civil;
+  private Integer cod_nacionalidad;
+  private Integer cod_genero;
   private String dni;
-  private String primerApellido;
-  private String segundoApellido;
+  private String primer_apellido;
+  private String segundo_apellido;
   private String prenombre;
   private String direccion;
 }
