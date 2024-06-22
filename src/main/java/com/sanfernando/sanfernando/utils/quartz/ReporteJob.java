@@ -11,11 +11,8 @@ import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.SchedulerException;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.sanfernando.sanfernando.dao.daoImpl.ReporteDaoImpl;
-import com.sanfernando.sanfernando.services.ReporteService;
-import com.sanfernando.sanfernando.services.serviceImpl.ReporteServiceImpl;
 
 public class ReporteJob implements Job{
 

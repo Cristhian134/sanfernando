@@ -1,0 +1,55 @@
+###
+GET  http://localhost:8080/api/seguimiento/trasladosProceso HTTP/1.1
+
+###
+GET  http://localhost:8080/api/seguimiento/trasladoProcesoDetalle?codGuiaRemision=922272327932070714132 HTTP/1.1
+
+###
+GET  http://localhost:8080/api/seguimiento/trasladoProcesoPedidos?codGuiaRemision=922272327932070714132 HTTP/1.1
+
+###
+PUT  http://localhost:8080/api/seguimiento/actualizarTrasladoProcesoPedido?idPedido=1 HTTP/1.1
+
+###
+GET  http://localhost:8080/api/seguimiento/obtenerVehiculos HTTP/1.1
+
+###
+GET  http://localhost:8080/api/seguimiento/obtenerVehiculoDetalle?idVehiculo=1 HTTP/1.1
+
+###
+PUT  http://localhost:8080/api/seguimiento/actualizarVehiculo HTTP/1.1
+Content-Type: application/json
+
+{
+  "idVehiculo": 1,
+  "idVehiculoMarca": 1,
+  "idVehiculoModelo": "F",
+  "idVehiculoEstado": "D",
+  "anioFabricacion": 2019,
+  "placa": "PLACA",
+  "codVehiculoTipo": "C",
+  "capacidadCarga": 10.0,
+  "fechaUltimoMantenimiento": "2019-01-01"
+}
+
+###
+POST  http://localhost:8080/api/seguimiento/crearVehiculo HTTP/1.1
+Content-Type: application/json
+
+{
+  "idVehiculoMarca": 1,
+  "idVehiculoModelo": "F",
+  "idVehiculoEstado": "D",
+  "anioFabricacion": 2019,
+  "placa": "PLACA",
+  "codVehiculoTipo": "C",
+  "capacidadCarga": 10.0,
+  "fechaUltimoMantenimiento": "2019-01-01"
+}
+
+###
+GET http://localhost:8080/api/seguimiento/obtenerTransportistas HTTP/1.1
+
+###
+GET http://localhost:8080/api/seguimiento/obtenerTransportistaDetalle HTTP/1.1
+
