@@ -3,14 +3,21 @@ package com.sanfernando.sanfernando.dao.daoImpl;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
 import com.sanfernando.sanfernando.dao.SeguimientoDao;
+import com.sanfernando.sanfernando.dtos.requests.seguimiento.SeguimientoRutaCrearRequest;
+import com.sanfernando.sanfernando.dtos.requests.seguimiento.SeguimientoRutaParaderoRequest;
+import com.sanfernando.sanfernando.dtos.requests.seguimiento.SeguimientoTransportistaCrearRequest;
+import com.sanfernando.sanfernando.dtos.requests.seguimiento.SeguimientoTransportistaDetalleActualizarRequest;
 import com.sanfernando.sanfernando.dtos.requests.seguimiento.SeguimientoVehiculoCrearRequest;
 import com.sanfernando.sanfernando.dtos.requests.seguimiento.SeguimientoVehiculoDetalleActualizarRequest;
+import com.sanfernando.sanfernando.dtos.responses.seguimiento.SeguimientoRutaDetalleResponse;
+import com.sanfernando.sanfernando.dtos.responses.seguimiento.SeguimientoRutaListaResponse;
 import com.sanfernando.sanfernando.dtos.responses.seguimiento.SeguimientoTransporstistaListaResponse;
 import com.sanfernando.sanfernando.dtos.responses.seguimiento.SeguimientoTransportistaDetalleResponse;
 import com.sanfernando.sanfernando.dtos.responses.seguimiento.SeguimientoTrasladoDetalleResponse;
@@ -104,9 +111,9 @@ public class SeguimientoDaoImpl implements SeguimientoDao{
   }
 
   @Override
-  public SeguimientoTrasladoPedidoListaResponse getTrasladoProcesoPedidos(String codGuiaRemision) {
+  public List<SeguimientoTrasladoPedidoListaResponse> getTrasladoProcesoPedidos(String codGuiaRemision) {
     con.startConexion();
-    SeguimientoTrasladoPedidoListaResponse seguimientoTrasladoPedidoListaResponse = new SeguimientoTrasladoPedidoListaResponse();
+    List<SeguimientoTrasladoPedidoListaResponse> seguimientoTrasladoPedidoListaResponses = new ArrayList<>();
     try {
       String query =
         "SELECT p.cod_pedido, " +
@@ -114,7 +121,8 @@ public class SeguimientoDaoImpl implements SeguimientoDao{
         "osa.fecha AS fecha_salida, " +
         "ore.fecha AS fecha_llegada, " +
         "ld.denominacion AS destino, " +
-        "pd.orden " +
+        "p.cod_pedido, " +
+        "p.cod_pedido_estado " +
         "FROM " +
         "traslado t " +
         "JOIN detalle_ticket_traslado dtt ON t.id_traslado = dtt.id_traslado " +
@@ -131,12 +139,16 @@ public class SeguimientoDaoImpl implements SeguimientoDao{
       ps.setString(1, codGuiaRemision);
       ResultSet rs = ps.executeQuery();
       while (rs.next()) {
-        seguimientoTrasladoPedidoListaResponse.setIdPedido(rs.getString("cod_pedido"));
-        seguimientoTrasladoPedidoListaResponse.setTipoPedido(rs.getString("tipo_pedido"));
-        seguimientoTrasladoPedidoListaResponse.setFechaSalida(rs.getString("fecha_salida"));
-        seguimientoTrasladoPedidoListaResponse.setFechaLLegada(rs.getString("fecha_llegada"));
-        seguimientoTrasladoPedidoListaResponse.setDestino(rs.getString("destino"));
-        seguimientoTrasladoPedidoListaResponse.setOrden(rs.getString("orden"));
+        SeguimientoTrasladoPedidoListaResponse seguimientoTrasladoPedidoListaResponse = SeguimientoTrasladoPedidoListaResponse
+          .builder()
+          .idPedido(rs.getString("cod_pedido"))
+          .tipoPedido(rs.getString("tipo_pedido"))
+          .fechaSalida(rs.getString("fecha_salida"))
+          .fechaLLegada(rs.getString("fecha_llegada"))
+          .destino(rs.getString("destino"))
+          .idEstadoPedido(rs.getString("cod_pedido_estado"))
+          .build();
+        seguimientoTrasladoPedidoListaResponses.add(seguimientoTrasladoPedidoListaResponse);
       }
       rs.close();
       ps.close();
@@ -144,7 +156,7 @@ public class SeguimientoDaoImpl implements SeguimientoDao{
       e.printStackTrace();
     }
     con.closeConexion();
-    return seguimientoTrasladoPedidoListaResponse;
+    return seguimientoTrasladoPedidoListaResponses;
   }
 
   @Override
@@ -391,4 +403,216 @@ public class SeguimientoDaoImpl implements SeguimientoDao{
     con.closeConexion();
     return seguimientoTransportistaDetalleResponse;
   } 
+
+  @Override
+  public int actualizarTransportista(SeguimientoTransportistaDetalleActualizarRequest request) {
+    con.startConexion();
+    int response = 0;
+    try {
+      String query =
+        "UPDATE transportista " +
+        "SET " +
+        "num_licencia = ?, " + 
+        "cod_tipo_licencia = ?, " + 
+        "fecha_vencimiento_licencia = ?, " + 
+        "cod_estado_transportista = ? " + 
+        "WHERE cod_transportista = ?; ";
+      PreparedStatement ps = con.getCon().prepareStatement(query);
+      ps.setString(1, request.getNumLicencia());
+      ps.setString(2, request.getCodTipoLicencia());
+      ps.setDate(3, new java.sql.Date(request.getFechaVencimientoLicencia().getTime()));
+      ps.setString(4, request.getCodEstadoTransportista());
+      ps.setInt(5, request.getIdTransportista());
+      ps.executeUpdate();
+      ps.close();
+      response = 1;
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    con.closeConexion();
+    return response;
+  }
+
+  @Override
+  public int crearTransportista(SeguimientoTransportistaCrearRequest request) {
+    con.startConexion();
+    int response = 0;
+    try {
+      String query =
+        "INSERT INTO transportista " + 
+        "(cod_empleado, cod_estado_transportista, cod_tipo_licencia, num_licencia, fecha_vencimiento_licencia) " +
+        "VALUES (?, ?, ?, ?, ?); ";
+      PreparedStatement ps = con.getCon().prepareStatement(query);
+      ps.setInt(1, request.getIdEmpleado());
+      ps.setString(2, request.getIdEstadoTransportista());
+      ps.setString(3, request.getIdTipoLicencia());
+      ps.setString(4, request.getNumLicencia());
+      ps.setDate(5, new java.sql.Date(request.getFechaVencimientoLicencia().getTime()));
+      ps.executeUpdate();
+      ps.close();
+      response = 1;
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    con.closeConexion();
+    return response;
+  }
+
+  @Override
+  public List<SeguimientoRutaListaResponse> obtenerRutas() {
+    con.startConexion();
+    List<SeguimientoRutaListaResponse> seguimientoRutaListaResponses = new ArrayList<>();
+    try {
+      String query =
+        "SELECT r.cod_ruta, " +
+        "rt.descripcion AS tipo_ruta, " +
+        "r.distancia_total, " +
+        "lo.denominacion AS origen, " +
+        "ld.denominacion AS destino " +
+        "FROM " +
+        "ruta r " +
+        "JOIN ruta_tipo rt ON r.cod_ruta_tipo = rt.cod_ruta_tipo " +
+        "JOIN paradero po ON r.cod_ruta = po.cod_ruta AND po.orden = 1 " +
+        "JOIN \"local\" lo ON po.cod_local = lo.cod_local " +
+        "JOIN paradero pd ON r.cod_ruta = pd.cod_ruta AND pd.orden = (SELECT MAX(orden) FROM paradero WHERE cod_ruta = r.cod_ruta) " +
+        "JOIN \"local\" ld ON pd.cod_local = ld.cod_local;";
+      PreparedStatement ps = con.getCon().prepareStatement(query);
+      ResultSet rs = ps.executeQuery();
+      while (rs.next()) {
+        SeguimientoRutaListaResponse seguimientoRutaListaResponse = SeguimientoRutaListaResponse
+          .builder()
+          .idRuta(rs.getInt("cod_ruta"))
+          .tipoRuta(rs.getString("tipo_ruta"))
+          .distanciaTotal(rs.getDouble("distancia_total"))
+          .origen(rs.getString("origen"))
+          .destino(rs.getString("destino"))
+          .build();
+        seguimientoRutaListaResponses.add(seguimientoRutaListaResponse);
+      }
+      rs.close();
+      ps.close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    con.closeConexion();
+    return seguimientoRutaListaResponses;
+  }
+
+  @Override
+  public List<SeguimientoRutaDetalleResponse> obtenerRutaDetalle(int idRuta) {
+    con.startConexion();
+    List<SeguimientoRutaDetalleResponse> seguimientoRutaDetalleResponses = new ArrayList<>();
+    try {
+      String query =
+        "SELECT p.orden, " +
+        "l.denominacion AS local, " +
+        "pt.descripcion AS tipo_paradero " +
+        "FROM paradero p " +
+        "JOIN \"local\" l ON p.cod_local = l.cod_local " +
+        "JOIN paradero_tipo pt ON p.cod_paradero_tipo = pt.cod_paradero_tipo " +
+        "WHERE p.cod_ruta = 1 " +
+        "ORDER BY p.orden; ";
+      PreparedStatement ps = con.getCon().prepareStatement(query);
+      ResultSet rs = ps.executeQuery();
+      while (rs.next()) {
+        SeguimientoRutaDetalleResponse seguimientoRutaDetalleResponse = SeguimientoRutaDetalleResponse
+          .builder()
+          .orden(rs.getInt("orden"))
+          .local(rs.getString("local"))
+          .tipoParadero(rs.getString("tipo_paradero"))
+          .build();
+        seguimientoRutaDetalleResponses.add(seguimientoRutaDetalleResponse);
+      }
+      rs.close();
+      ps.close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    con.closeConexion();
+    return seguimientoRutaDetalleResponses;
+  }
+
+  @Override
+  public int borrarRuta(int idRuta) {
+    con.startConexion();
+    int response = 0;
+    try {
+
+      String query1 = "DELETE FROM paradero WHERE cod_ruta = ?;";
+      PreparedStatement ps1 = con.getCon().prepareStatement(query1);
+      ps1.setInt(1, idRuta);
+      ps1.executeUpdate();
+      ps1.close();
+
+      String query2 = "DELETE FROM ruta WHERE cod_ruta = ?; ";
+      PreparedStatement ps2 = con.getCon().prepareStatement(query2);
+      ps2.setInt(1, idRuta);
+      ps2.executeUpdate();
+      ps2.close();
+      response = 1;
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    con.closeConexion();
+    return response;
+  }
+
+  public int crearRutaParadero(SeguimientoRutaParaderoRequest[] seguimientoRutaParaderoRequests, int idRuta) {
+    con.startConexion();
+    int response = 0;
+    try {
+      String query = 
+        "INSERT INTO paradero " +
+        "( cod_ruta, cod_local, cod_paradero_tipo, orden ) VALUES " +
+        "(?, ?, ?, ?);";
+      PreparedStatement ps = con.getCon().prepareStatement(query);
+      for (SeguimientoRutaParaderoRequest seguimientoRutaParaderoRequest : seguimientoRutaParaderoRequests) {
+        ps.setInt(1, idRuta);
+        ps.setInt(2, seguimientoRutaParaderoRequest.getIdLocal());
+        ps.setInt(3, seguimientoRutaParaderoRequest.getIdParaderoTipo());
+        ps.setInt(4, seguimientoRutaParaderoRequest.getOrden());
+        ps.addBatch();
+      }
+      ps.clearParameters();
+      ps.executeBatch();
+      ps.close();
+      response = 1;
+    } catch (SQLException e) {      
+      e.printStackTrace();
+    }
+    con.closeConexion();
+    return response;
+  }
+
+  @Override
+  public int crearRuta(SeguimientoRutaCrearRequest request) {
+    con.startConexion();
+    int response = 0;
+    int idRuta = 0;
+    try {
+      String query =  
+        "INSERT INTO ruta " +
+        "(distancia_total, cod_ruta_tipo, duracion ) VALUES " +
+        "(?, ?, ?);";
+      PreparedStatement ps = con.getCon().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+      ps.setDouble(1, request.getDistanciaTotal());
+      ps.setInt(2, request.getIdRutaTipo());
+      ps.setDouble(3, request.getDuracion());
+      
+      ps.executeUpdate();
+      ResultSet rs = ps.getGeneratedKeys();
+      while (rs.next()) {
+        idRuta = rs.getInt(1);
+      }
+      rs.close();
+      ps.close();
+      response = 1;
+
+      this.crearRutaParadero(request.getParaderos(), idRuta);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    con.closeConexion();
+    return response;
+  }
 }

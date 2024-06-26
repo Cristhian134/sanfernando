@@ -5,17 +5,20 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sanfernando.sanfernando.dtos.requests.ReporteProgramacionRequest;
-import com.sanfernando.sanfernando.dtos.requests.reportes.ReporteRequest;
+import com.sanfernando.sanfernando.dtos.requests.seguimiento.SeguimientoRutaCrearRequest;
+import com.sanfernando.sanfernando.dtos.requests.seguimiento.SeguimientoTransportistaCrearRequest;
+import com.sanfernando.sanfernando.dtos.requests.seguimiento.SeguimientoTransportistaDetalleActualizarRequest;
 import com.sanfernando.sanfernando.dtos.requests.seguimiento.SeguimientoVehiculoCrearRequest;
 import com.sanfernando.sanfernando.dtos.requests.seguimiento.SeguimientoVehiculoDetalleActualizarRequest;
-import com.sanfernando.sanfernando.dtos.responses.reporte.ReporteProgramacionResponse;
+import com.sanfernando.sanfernando.dtos.responses.seguimiento.SeguimientoRutaDetalleResponse;
+import com.sanfernando.sanfernando.dtos.responses.seguimiento.SeguimientoRutaListaResponse;
 import com.sanfernando.sanfernando.dtos.responses.seguimiento.SeguimientoTransporstistaListaResponse;
 import com.sanfernando.sanfernando.dtos.responses.seguimiento.SeguimientoTransportistaDetalleResponse;
 import com.sanfernando.sanfernando.dtos.responses.seguimiento.SeguimientoTrasladoDetalleResponse;
@@ -52,7 +55,7 @@ public class SeguimientoController {
 
   @GetMapping(value = "trasladoProcesoPedidos")
   public ResponseEntity<Object> getTrasladosProcesoPedidos(@RequestParam String codGuiaRemision) {
-    SeguimientoTrasladoPedidoListaResponse response = seguimientoService.getTrasladoProcesoPedidos(codGuiaRemision);
+    List<SeguimientoTrasladoPedidoListaResponse> response = seguimientoService.getTrasladoProcesoPedidos(codGuiaRemision);
     return ResponseEntity.ok(response);
   }
 
@@ -60,7 +63,7 @@ public class SeguimientoController {
   public ResponseEntity<Object> actualizarTrasladoProcesoPedido(@RequestParam int idPedido) {
     int response = seguimientoService.actualizarTrasladoProcesoPedido(idPedido);
     if (response > 0) {
-      return ResponseEntity.ok().build();
+      return ResponseEntity.ok(true);
     } else {
       return ResponseEntity.notFound().build();
     }
@@ -110,4 +113,61 @@ public class SeguimientoController {
     return ResponseEntity.ok(response);
   }
 
+  @PostMapping(value = "actualizarTransportista")
+  public ResponseEntity<Object> actualizarTransportista(@RequestBody SeguimientoTransportistaDetalleActualizarRequest request) {
+    int response = seguimientoService.actualizarTransportista(request);
+    if (response > 0) {
+      return ResponseEntity.ok().build();
+    } else {
+      return ResponseEntity.notFound().build();
+    }
+  }
+
+  @PostMapping(value = "crearTransportista")
+  public ResponseEntity<Object> crearTransportista(@RequestBody SeguimientoTransportistaCrearRequest request) {
+    int response = seguimientoService.crearTransportista(request);
+    if (response > 0) {
+      return ResponseEntity.ok().build();
+    } else {
+      return ResponseEntity.notFound().build();
+    }
+  }
+
+  @GetMapping(value = "obtenerRutas")
+  public ResponseEntity<Object> crearTransportista() {
+    List<SeguimientoRutaListaResponse> response = seguimientoService.obtenerRutas();
+    return ResponseEntity.ok(response);
+  }
+
+  @GetMapping(value = "obtenerRutaDetalle")
+  public ResponseEntity<Object> crearTransportista(@RequestParam int idRuta) {
+    List<SeguimientoRutaDetalleResponse> response = seguimientoService.obtenerRutaDetalle(idRuta);
+    return ResponseEntity.ok(response);
+  }
+
+  @DeleteMapping("borrarRuta")
+  public ResponseEntity<Void> borrarRuta(@RequestParam int idRuta) {
+    int response = seguimientoService.borrarRuta(idRuta);
+    if (response > 0) {
+      return ResponseEntity.ok().build();
+    } else {
+      return ResponseEntity.notFound().build();
+    }
+  }
+
+  @PostMapping(value = "crearRuta")
+  public ResponseEntity<Object> crearRuta(@RequestBody SeguimientoRutaCrearRequest request) {
+    int response = seguimientoService.crearRuta(request);
+    if (response > 0) {
+      return ResponseEntity.ok().build();
+    } else {
+      return ResponseEntity.notFound().build();
+    }
+  }
+
+  // @GetMapping(value = "trasladoProgramadoDetalle")
+  // public ResponseEntity<Object> getTrasladosProceso(@RequestParam String codGuiaRemision) {
+  //   SeguimientoTrasladoDetalleResponse response = seguimientoService.getTrasladoProcesoDetalle(codGuiaRemision);
+  //   return ResponseEntity.ok(response);
+  // }
 }

@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SeguimientoTransportistaDetalleResponse {
-  private int idTransportista;
   private String nombreCompleto;
   private String dni;
   private String licencia;

@@ -137,7 +137,7 @@ public class PedidoDaoImpl implements PedidoDao{
       java.sql.Date sqlDate = java.sql.Date.valueOf(pedidoTicketRequest.getFechaEntrega());
       ps.setDate(1, sqlDate);
 
-      int rows =ps.executeUpdate();
+      int rows = ps.executeUpdate();
 
       ResultSet rs = ps.getGeneratedKeys();
       while (rs.next()) {

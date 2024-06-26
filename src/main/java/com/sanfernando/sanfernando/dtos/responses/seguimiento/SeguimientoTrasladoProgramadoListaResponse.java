@@ -9,11 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SeguimientoTrasladoPedidoListaResponse {
-  private String idPedido;
-  private String tipoPedido;
-  private String fechaSalida;
-  private String fechaLLegada;
+public class SeguimientoTrasladoProgramadoListaResponse {
+  private String codGuiaRemision;
+  private String origen;
   private String destino;
-  private String idEstadoPedido;
+  private String horaInicio;
 }

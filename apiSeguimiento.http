@@ -1,14 +1,61 @@
+/* PROTOTIPO I202 */
+
 ###
 GET  http://localhost:8080/api/seguimiento/trasladosProceso HTTP/1.1
 
 ###
 GET  http://localhost:8080/api/seguimiento/trasladoProcesoDetalle?codGuiaRemision=922272327932070714132 HTTP/1.1
 
+/* PROTOTIPO I202-E1 */
+
 ###
 GET  http://localhost:8080/api/seguimiento/trasladoProcesoPedidos?codGuiaRemision=922272327932070714132 HTTP/1.1
 
 ###
 PUT  http://localhost:8080/api/seguimiento/actualizarTrasladoProcesoPedido?idPedido=1 HTTP/1.1
+
+/* PROTOTIPO I203 */
+
+  /* PROTOTIPO I203-E1 */
+
+  /* PROTOTIPO I203-E2 */
+
+  /* PROTOTIPO I204 */
+
+###
+GET  http://localhost:8080/api/seguimiento/obtenerRutas HTTP/1.1
+
+###
+GET  http://localhost:8080/api/seguimiento/obtenerRutaDetalle?idRuta=1 HTTP/1.1
+
+###
+DELETE http://localhost:8080/api/seguimiento/borrarRuta?idRuta=105 HTTP/1.1
+
+/* PROTOTIPO I204-E1 */
+
+###
+POST http://localhost:8080/api/seguimiento/crearRuta HTTP/1.1
+Content-Type: application/json
+
+{
+  "distanciaTotal": 10.0,
+  "idRutaTipo": 1,
+  "duracion": 120.0,
+  "paraderos": [
+    {
+      "idLocal": 1,
+      "idParaderoTipo": 1,
+      "orden": 1
+    },
+    { 
+      "idLocal": 2,
+      "idParaderoTipo": 2,
+      "orden": 2
+    }
+  ]
+}
+
+/* PROTOTIPO I205 */
 
 ###
 GET  http://localhost:8080/api/seguimiento/obtenerVehiculos HTTP/1.1
@@ -32,6 +79,8 @@ Content-Type: application/json
   "fechaUltimoMantenimiento": "2019-01-01"
 }
 
+/* PROTOTIPO I205-E1 */
+
 ###
 POST  http://localhost:8080/api/seguimiento/crearVehiculo HTTP/1.1
 Content-Type: application/json
@@ -47,9 +96,36 @@ Content-Type: application/json
   "fechaUltimoMantenimiento": "2019-01-01"
 }
 
+/* PROTOTIPO I206 */
+
 ###
 GET http://localhost:8080/api/seguimiento/obtenerTransportistas HTTP/1.1
 
 ###
-GET http://localhost:8080/api/seguimiento/obtenerTransportistaDetalle HTTP/1.1
+GET http://localhost:8080/api/seguimiento/obtenerTransportistaDetalle?idTransportista=1 HTTP/1.1
 
+###
+POST http://localhost:8080/api/seguimiento/actualizarTransportista HTTP/1.1
+Content-Type: application/json
+
+{
+  "idTransportista": 1,
+  "numLicencia": "B22358195",
+  "codTipoLicencia": "X",
+  "fechaVencimientoLicencia": "2019-01-01",
+  "codEstadoTransportista": "D"
+}
+
+/* PROTOTIPO I206-E1*/
+
+###
+POST http://localhost:8080/api/seguimiento/crearTransportista HTTP/1.1
+Content-Type: application/json
+
+{
+  "idEmpleado": 1,
+  "idEstadoTransportista": "D",
+  "idTipoLicencia": "X",
+  "numLicencia": "B22358195",
+  "fechaVencimientoLicencia": "2019-01-01"
+}

@@ -6,11 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sanfernando.sanfernando.dao.SeguimientoDao;
+import com.sanfernando.sanfernando.dtos.requests.seguimiento.SeguimientoRutaCrearRequest;
+import com.sanfernando.sanfernando.dtos.requests.seguimiento.SeguimientoTransportistaCrearRequest;
+import com.sanfernando.sanfernando.dtos.requests.seguimiento.SeguimientoTransportistaDetalleActualizarRequest;
 import com.sanfernando.sanfernando.dtos.requests.seguimiento.SeguimientoVehiculoCrearRequest;
 import com.sanfernando.sanfernando.dtos.requests.seguimiento.SeguimientoVehiculoDetalleActualizarRequest;
+import com.sanfernando.sanfernando.dtos.responses.seguimiento.SeguimientoRutaDetalleResponse;
+import com.sanfernando.sanfernando.dtos.responses.seguimiento.SeguimientoRutaListaResponse;
 import com.sanfernando.sanfernando.dtos.responses.seguimiento.SeguimientoTransporstistaListaResponse;
 import com.sanfernando.sanfernando.dtos.responses.seguimiento.SeguimientoTransportistaDetalleResponse;
-import com.sanfernando.sanfernando.dtos.responses.seguimiento.SeguimientoTransporstistaListaResponse;
 import com.sanfernando.sanfernando.dtos.responses.seguimiento.SeguimientoTrasladoDetalleResponse;
 import com.sanfernando.sanfernando.dtos.responses.seguimiento.SeguimientoTrasladoListaResponse;
 import com.sanfernando.sanfernando.dtos.responses.seguimiento.SeguimientoTrasladoPedidoListaResponse;
@@ -35,7 +39,7 @@ public class SeguimientoServiceImpl implements SeguimientoService{
   }
 
   @Override
-  public SeguimientoTrasladoPedidoListaResponse getTrasladoProcesoPedidos(String codGuiaRemision) {
+  public List<SeguimientoTrasladoPedidoListaResponse> getTrasladoProcesoPedidos(String codGuiaRemision) {
     return seguimientoDao.getTrasladoProcesoPedidos(codGuiaRemision);
   }
 
@@ -72,5 +76,35 @@ public class SeguimientoServiceImpl implements SeguimientoService{
   @Override
   public SeguimientoTransportistaDetalleResponse obtenerTransportistaDetalle(int idTransportista) {
     return seguimientoDao.obtenerTransportistaDetalle(idTransportista);
+  }
+
+  @Override
+  public int actualizarTransportista(SeguimientoTransportistaDetalleActualizarRequest request) {
+    return seguimientoDao.actualizarTransportista(request);
+  }
+
+  @Override
+  public int crearTransportista(SeguimientoTransportistaCrearRequest request) {
+    return seguimientoDao.crearTransportista(request);
+  }
+
+  @Override
+  public List<SeguimientoRutaListaResponse> obtenerRutas() {
+    return seguimientoDao.obtenerRutas();
+  }
+
+  @Override
+  public List<SeguimientoRutaDetalleResponse> obtenerRutaDetalle(int idRuta) {
+    return seguimientoDao.obtenerRutaDetalle(idRuta);
+  }
+
+  @Override
+  public int borrarRuta(int idRuta) {
+    return seguimientoDao.borrarRuta(idRuta);
+  }
+
+  @Override
+  public int crearRuta(SeguimientoRutaCrearRequest request) {
+    return seguimientoDao.crearRuta(request);
   }
 }
