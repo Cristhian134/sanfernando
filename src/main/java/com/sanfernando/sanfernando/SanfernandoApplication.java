@@ -8,6 +8,6 @@ public class SanfernandoApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SanfernandoApplication.class, args);
-	}
+	}  
 	
 }

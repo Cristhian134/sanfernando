@@ -38,14 +38,13 @@ public class SeguimientoDaoImpl implements SeguimientoDao{
     List<SeguimientoTrasladoListaResponse> seguimientoTrasladoListaResponses = new ArrayList<>();
     try {
       String query = 
-        "SELECT t.cod_guia_remision,  lo.denominacion AS origen, ld.denominacion AS destino " + 
-        "FROM traslado t " + 
-        "JOIN operacion o ON t.id_operacion_inicia = o.id_operacion " + 
-        "JOIN ruta r ON t.cod_ruta = r.cod_ruta "+ 
-      "JOIN paradero po ON r.cod_ruta = po.cod_ruta AND po.cod_paradero_tipo = 1 " + 
+      "SELECT t.cod_guia_remision,  lo.denominacion AS origen, ld.denominacion AS destino " + 
+      "FROM traslado t " + 
+      "JOIN operacion o ON t.id_operacion_inicia = o.id_operacion " + 
+      "JOIN paradero po ON po.cod_ruta = t.cod_ruta AND po.cod_paradero_tipo = 1 " + 
       "JOIN local lo ON po.cod_local = lo.cod_local " + 
-      "JOIN paradero pd ON r.cod_ruta = pd.cod_ruta AND pd.orden = (SELECT MAX(orden) FROM paradero WHERE cod_ruta = r.cod_ruta) " + 
-      "JOIN local ld ON pd.cod_local = ld.cod_local; ";
+      "JOIN paradero pd ON pd.cod_ruta = t.cod_ruta AND pd.cod_paradero_tipo = 3 " + 
+      "JOIN local ld ON pd.cod_local = ld.cod_local;";
       PreparedStatement ps = con.getCon().prepareStatement(query);
       ResultSet rs = ps.executeQuery(); 
       while (rs.next()) {
@@ -86,9 +85,9 @@ public class SeguimientoDaoImpl implements SeguimientoDao{
         "JOIN persona p ON e.cod_persona = p.cod_persona " +
         "JOIN vehiculo v ON t.cod_vehiculo = v.cod_vehiculo " +
         "JOIN ruta r ON t.cod_ruta = r.cod_ruta " +
-        "JOIN paradero po ON r.cod_ruta = po.cod_ruta AND po.orden = 1 " +
+        "JOIN paradero po ON r.cod_ruta = po.cod_ruta AND po.cod_paradero_tipo = 1 " +
         "JOIN \"local\" lo ON po.cod_local = lo.cod_local " +
-        "JOIN paradero pd ON r.cod_ruta = pd.cod_ruta AND pd.orden = (SELECT MAX(orden) FROM paradero WHERE cod_ruta = r.cod_ruta) " +
+        "JOIN paradero pd ON r.cod_ruta = pd.cod_ruta AND pd.cod_paradero_tipo = 3 " +
         "JOIN \"local\" ld ON pd.cod_local = ld.cod_local " +
         "WHERE t.cod_guia_remision = ? ";
       PreparedStatement ps = con.getCon().prepareStatement(query);
@@ -178,6 +177,7 @@ public class SeguimientoDaoImpl implements SeguimientoDao{
     return response;
   }
 
+  
   @Override
   public List<SeguimientoVehiculoListaResponse> obtenerVehiculos() {
     con.startConexion();
@@ -193,7 +193,7 @@ public class SeguimientoDaoImpl implements SeguimientoDao{
         "v.fecha_ultimo_mantenimiento, " +
         "ve.descripcion AS estado " +
         "FROM vehiculo v " +
-        "JOIN vehiculo_modelo vm ON v.cod_vehiculo_modelo = vm.cod_vehiculo_modelo " +
+        "JOIN vehiculo_marca vm ON v.cod_vehiculo_marca = vm.cod_vehiculo_marca " +
         "JOIN vehiculo_estado ve ON v.cod_vehiculo_estado = ve.cod_vehiculo_estado";
       PreparedStatement ps = con.getCon().prepareStatement(query);
       ResultSet rs = ps.executeQuery(); 
@@ -510,9 +510,10 @@ public class SeguimientoDaoImpl implements SeguimientoDao{
         "FROM paradero p " +
         "JOIN \"local\" l ON p.cod_local = l.cod_local " +
         "JOIN paradero_tipo pt ON p.cod_paradero_tipo = pt.cod_paradero_tipo " +
-        "WHERE p.cod_ruta = 1 " +
+        "WHERE p.cod_ruta = ? " +
         "ORDER BY p.orden; ";
       PreparedStatement ps = con.getCon().prepareStatement(query);
+      ps.setInt(1, idRuta);
       ResultSet rs = ps.executeQuery();
       while (rs.next()) {
         SeguimientoRutaDetalleResponse seguimientoRutaDetalleResponse = SeguimientoRutaDetalleResponse

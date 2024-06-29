@@ -26,7 +26,7 @@ PUT  http://localhost:8080/api/seguimiento/actualizarTrasladoProcesoPedido?idPed
 GET  http://localhost:8080/api/seguimiento/obtenerRutas HTTP/1.1
 
 ###
-GET  http://localhost:8080/api/seguimiento/obtenerRutaDetalle?idRuta=1 HTTP/1.1
+GET  http://localhost:8080/api/seguimiento/obtenerRutaDetalle?idRuta=3 HTTP/1.1
 
 ###
 DELETE http://localhost:8080/api/seguimiento/borrarRuta?idRuta=105 HTTP/1.1

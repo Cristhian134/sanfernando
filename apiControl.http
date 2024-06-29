@@ -14,3 +14,6 @@ GET http://localhost:8080/api/control/actualizarEstadoIncidencia?idIncidencia=2&
 
 ###
 GET http://localhost:8080/api/control/actualizarEstadoIncidencia?idIncidencia=1&idEstadoIncidencia=S
+
+###
+GET https://www.redalyc.org/pdf/4655/465545872004.pdf HTTP/1.1
